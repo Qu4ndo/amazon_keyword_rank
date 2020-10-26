@@ -36,3 +36,7 @@ if __name__ = "__main__":
 
     #close webdriver
     driver.close()
+
+'''
+class="aok-inline-block s-sponsored-label-info-icon" - Sponsored product Tag
+'''
