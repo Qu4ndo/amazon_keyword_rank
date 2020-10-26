@@ -2,8 +2,6 @@ import csv
 from bs4 import BeautifulSoup as bs4
 from selenium import webdriver
 
-#startup the webdriver
-driver = webdriver.Chrome()
 
 def get_url(search_term):
     #generate URL from search_term
@@ -11,25 +9,30 @@ def get_url(search_term):
     search_term = search_term.replace(" ", "+")
     return template.format(search_term)
 
-url = get_url("organizer")
-driver.get(url)
-print(url)
 
+if __name__ = "__main__":
+    #startup the webdriver
+    driver = webdriver.Chrome()
 
-#get page soup
-soup = bs4(driver.page_source, "html.parser")
+    #include keyword to url
+    url = get_url("organizer")
+    driver.get(url)
+    print(url)
 
-#get item
-results = soup.find_all("div", {"data-component-type": "s-search-result"})
+    #get page soup
+    soup = bs4(driver.page_source, "html.parser")
 
-for idx, item in enumerate(results):
-    ASIN = item["data-asin"]
-    Index = item["data-index"]
-    print(ASIN)
-    print("Index AMZ: " + Index)
-    idx = idx + 1
-    print("Current Position: " + str(idx))
-    print("########")
+    #get item
+    results = soup.find_all("div", {"data-component-type": "s-search-result"})
 
+    for idx, item in enumerate(results):
+        ASIN = item["data-asin"]
+        Index = item["data-index"]
+        print(ASIN)
+        print("Index AMZ: " + Index)
+        idx = idx + 1
+        print("Current Position: " + str(idx))
+        print("########")
 
-driver.close()
+    #close webdriver
+    driver.close()
