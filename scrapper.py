@@ -21,6 +21,15 @@ soup = bs4(driver.page_source, "html.parser")
 
 #get item
 results = soup.find_all("div", {"data-component-type": "s-search-result"})
-item = results[0]
-atag = item.h2.a
-print(atag.text)
+
+for idx, item in enumerate(results):
+    ASIN = item["data-asin"]
+    Index = item["data-index"]
+    print(ASIN)
+    print("Index AMZ: " + Index)
+    idx = idx + 1
+    print("Current Position: " + str(idx))
+    print("########")
+
+
+driver.close()
