@@ -10,7 +10,7 @@ def get_url(search_term):
     return template.format(search_term)
 
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     #startup the webdriver
     driver = webdriver.Chrome()
 
@@ -26,12 +26,20 @@ if __name__ = "__main__":
     results = soup.find_all("div", {"data-component-type": "s-search-result"})
 
     for idx, item in enumerate(results):
-        ASIN = item["data-asin"]
-        Index = item["data-index"]
-        print(ASIN)
-        print("Index AMZ: " + Index)
+        asin = item["data-asin"]
+        index = item["data-index"]
+
+        sponsored = item.find("span", {"class": "aok-inline-block s-sponsored-label-info-icon"})
+        if sponsored == None:
+            not_sponsored = True
+        else:
+            not_sponsored = False
+
+        print(asin)
+        print("Index AMZ: " + index)
         idx = idx + 1
         print("Current Position: " + str(idx))
+        print("Is Product Organic: " + str(not_sponsored))
         print("########")
 
     #close webdriver
