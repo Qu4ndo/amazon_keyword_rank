@@ -10,12 +10,11 @@ def get_url(search_term, page):
     return template.format(search_term)
 
 
-def get_soup():
+def get_soup(page):
     #startup the webdriver
     driver = webdriver.Chrome()
 
     #include keyword to url
-    page = 2    #page of search
     url = get_url("organizer", page)
 
     #load webpage
@@ -53,5 +52,6 @@ def get_items(soup):
 
 
 if __name__ == "__main__":
-    soup = get_soup()
-    get_items(soup)
+    for page in range(1,2):     #!!! can be changed!
+        soup = get_soup(page)
+        get_items(soup)
