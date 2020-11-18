@@ -29,29 +29,31 @@ def get_soup(page):
     return soup
 
 
-def get_items(soup):
-    #get all individual items from the webpage
-    results = soup.find_all("div", {"data-component-type": "s-search-result"})
+def get_items():
+    #get the page soup for data
+    for page in range(1,3):     #!!! can be changed!
+        soup = get_soup(page)
 
-    for idx, item in enumerate(results):
-        asin = item["data-asin"]
-        index = item["data-index"]
+        #get all individual items from the webpage
+        results = soup.find_all("div", {"data-component-type": "s-search-result"})
 
-        sponsored = item.find("span", {"class": "aok-inline-block s-sponsored-label-info-icon"})
-        if sponsored == None:
-            not_sponsored = True
-        else:
-            not_sponsored = False
+        for idx, item in enumerate(results):
+            asin = item["data-asin"]
+            index = item["data-index"] #isn't needed
 
-        print(asin)
-        print("Index AMZ: " + index)
-        idx = idx + 1
-        print("Current Position: " + str(idx))
-        print("Is Product Organic: " + str(not_sponsored))
-        print("########")
+            sponsored = item.find("span", {"class": "aok-inline-block s-sponsored-label-info-icon"})
+            if sponsored == None:
+                not_sponsored = True
+            else:
+                not_sponsored = False
+
+            print(asin)
+            #print("Index AMZ: " + index)
+            #idx = idx + 1
+            #print("Current Position: " + str(idx))
+            #print("Is Product Organic: " + str(not_sponsored))
+            #print("########")
 
 
 if __name__ == "__main__":
-    for page in range(1,2):     #!!! can be changed!
-        soup = get_soup(page)
-        get_items(soup)
+    get_items()
