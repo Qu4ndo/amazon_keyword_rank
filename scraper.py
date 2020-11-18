@@ -2,6 +2,7 @@ import csv
 from bs4 import BeautifulSoup as bs4
 from selenium import webdriver
 import json
+import time
 
 
 def get_url(search_term, page):
@@ -31,7 +32,7 @@ def get_items():
     all_lists = []
 
     #get the page soup for data
-    for page in range(1,3):     #!!! can be changed!
+    for page in range(1,6):     #!!! can be changed!
         print("Get data from page - " + str(page))
         soup = get_soup(page)
 
@@ -61,13 +62,14 @@ def get_items():
 
         #append  individual pages to the other pages
         all_lists.append(items)
+        time.sleep(15) #sleep before load next site
 
     #sort the list of all pages
     sorted_list = []
     for items in all_lists:
         for item in items:
             sorted_list.append(item)
-    print(sorted_list)
+    #print(sorted_list)
 
     ranking = 1
     for item in sorted_list:
@@ -75,14 +77,39 @@ def get_items():
             return ranking
         ranking += 1
 
+
+def average(lst):
+    return sum(lst) / len(lst)
+
+
 if __name__ == "__main__":
-    #startup the webdriver
-    driver = webdriver.Chrome()
+    #list of all try's
+    ranking_list = []
 
-    #get ranking
-    searched_asin = "B08L9GS35N"
-    ranking = get_items()
-    print(ranking)
+    for run in range(1,4): #get average of rankings
+        print("#### This is the run " + str(run) + " ####")
+        #startup the webdriver
+        driver = webdriver.Chrome()
 
-    #close webdriver
-    driver.close()
+        #get ranking
+        searched_asin = "B08L9GS35N"
+        ranking = get_items()
+        ranking_list.append(ranking)
+        print(ranking)
+
+        #close webdriver
+        driver.close()
+        time.sleep(30) #sleep before load next site
+
+    print(ranking_list)
+    lst = []
+
+    #remove all None
+    for item in ranking_list:
+        if item != None:
+            lst.append(item)
+
+    #get average of all rankings
+    average = average(lst)
+    average = int(average) #round to full numbers
+    print("The Overall Rank is: " + str(average))
